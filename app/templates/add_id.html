@@ -1,0 +1,71 @@
+{% extends "/basic.html" %}
+{% block css_content %}
+{% endblock %}
+
+{% block title_content %}
+<title>{{title}}</title>
+{% endblock title_content %}
+
+
+{% block main_content %}
+
+<div class="container">
+
+    {{ form.hidden_tag()}}
+    <form class="row g-3" method="POST">
+        {{ form.account.label}}
+        {{ form.account}}
+
+        {{ form.category.label}}
+        {{ form.category}}
+
+        {{ form.subcategory.label}}
+        {{ form.subcategory}}
+
+        {{ form.date.label}}
+        {{ form.date}}
+
+        {{ form.amount.label}}
+        {{ form.amount}}
+
+        {{ form.submit(class="btn btn-outline-info")}}
+    </form>
+
+</div>
+
+<br/>
+
+
+<div class="container ">
+    <h4>Already used</h4>
+    <div class="row ">
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 ">
+            <div class="table-responsive-md ">
+                <table class="table table-sm  table-dark table-striped ">
+                    <th>ACCOUNT</th>
+                    {% for name in account %}
+                    <tr>
+                        <td>{{name}}</td>
+                    </tr>
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2  ">
+            <div class="table-responsive-md ">
+                <table class="table table-sm  table-dark table-striped table-bordered ">
+                    <th>CATEGORY</th>
+                    <th>SUBCATEGORY</th>
+                    {% for c,s in category %}
+                    <tr>
+                        <td>{{c}}</td>
+                        <td>{{s}}</td>
+                    </tr> 
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+
+
+        {% endblock main_content%}

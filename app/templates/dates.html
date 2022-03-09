@@ -1,0 +1,145 @@
+{% extends "/basic.html" %}
+{% block css_content %}
+
+{% endblock css_content %}
+{% block title_content %}
+<title>{{title}}</title>
+{% endblock title_content %}
+
+{% block main_content %}
+<div class="container">
+    <div class="table-responsive-md ">
+        <table class="table table-sm  table-dark table-striped table-bordered caption-top ">
+            <caption>
+                <h2>Transactions <h4> by {{heading}}</h4>
+                </h2>
+            </caption>
+            <th>ID</th>
+            <th>ACCOUNT</th>
+            <th>CATEGORY</th>
+            <th>SUBCATEGORY</th>
+            <th>DATE</th>
+            <th>AMOUNT</th>
+            <th></th>
+            <th></th>
+            {% for data in posts %}
+            <tr>
+                <td>{{data.id}}</td>
+                <td><a href="{{url_for('accounts',id = data.account)}}">{{data.account}}</a></td>
+                <td><a href="{{url_for('category',id = data.category)}}">{{data.category}}</a></td>
+                <td>{{data.subcategory}}</td>
+                <td><a href="{{url_for('dates',id = data.date)}}">{{data.date}}</a></td>
+                <td>{{data.amount}}</td>
+                <td> <a href="{{url_for('updateid',id = data.id)}}">Edit</a></td>
+                <td><a href="{{url_for('delete',id = data.id)}}">Delete</a> </td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+</div>
+<div class="container  mt-4 mb-4 ml-4 mr-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 ">
+            <canvas id="accountChart_date"></canvas>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 ">
+            <canvas id="categoryChart_date"></canvas>
+        </div>
+    </div>
+</div>  
+{% endblock main_content %}
+
+{% block js_script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    fontColor = "black";
+    accountChartDates();
+    categoryChartDates();
+    function accountChartDates() {
+        const accountName = JSON.parse({{ account_name| tojson}});
+    const accountAmount = JSON.parse({{ account_amount| tojson}});
+    let accountColor = [];
+    addColor(accountName.length, accountColor);
+    // console.log(accountColor); 
+    let dataAccountDate = {
+        labels: accountName,
+        datasets: [{
+            label: 'Account Used',
+            data: accountAmount,
+            backgroundColor: accountColor,
+            borderColor: accountColor,
+            borderWidth: 1
+        }]
+    };
+    const optionsAccountsDate = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: fontColor
+                }
+            },
+            title: {
+                display: true,
+                text: 'Accounts Used',
+                color: fontColor
+            }
+        }
+    };
+    const configAccountDate = {
+        type: 'doughnut',
+        data: dataAccountDate,
+        options: optionsAccountsDate
+
+    };
+    const accountChartDate = new Chart(
+        document.getElementById('accountChart_date').getContext('2d'),
+        configAccountDate);
+}
+    function categoryChartDates() {
+        const categoryName = JSON.parse({{ category_name| tojson}});
+    const categoryAmount = JSON.parse({{ category_amount| tojson}});
+    let categoryColor = [];
+    addColor(categoryName.length, categoryColor);
+    // console.log(categoryColor); 
+    let dataCategoryDates = {
+        labels: categoryName,
+        datasets: [{
+            label: "",
+            data: categoryAmount,
+            backgroundColor: categoryColor,
+            borderColor: categoryColor,
+            borderWidth: 1
+        }]
+    };
+    const optionsCategoryDates = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: fontColor
+                }
+            },
+            title: {
+                display: true,
+                text: 'Category Used',
+                color: fontColor
+            }
+        }
+    };
+    const configCategoryDates = {
+        type: 'bar',
+        data: dataCategoryDates,
+        options: optionsCategoryDates
+
+    };
+    const categoryChartDate = new Chart(
+        document.getElementById('categoryChart_date').getContext('2d'),
+        configCategoryDates);
+}
+
+
+</script>
+{% endblock js_script %}

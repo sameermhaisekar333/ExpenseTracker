@@ -1,0 +1,52 @@
+{% extends "/basic.html" %}
+{% block css_content %}
+
+{% endblock css_content%}
+{% block title_content %}
+<title>{{title}}</title> 
+{% endblock  title_content%}
+
+{% block main_content %}
+<div class="container">
+    <div class="table-responsive-md ">
+        <table class="table table-sm  table-dark table-striped table-bordered caption-top ">
+            <caption>
+                <h2>Transactions</h2>
+            </caption>
+            <th>ID</th>
+            <th>ACCOUNT</th>
+            <th>CATEGORY</th>
+            <th>SUBCATEGORY</th>
+            <th>DATE</th>
+            <th>AMOUNT</th>
+            <th></th>
+            <th></th>
+            {% for data in posts.items %}
+            <tr>
+                <td>{{data.id}}</td>
+                <td><a href="{{url_for('accounts',id = data.account)}}">{{data.account}}</a></td>
+                <td><a href="{{url_for('category',id = data.category)}}">{{data.category}}</a></td>
+                <td>{{data.subcategory}}</td>
+                <td><a href="{{url_for('dates',id = data.date)}}">{{data.date}}</a></td>
+                <td>{{data.amount}}</td>
+                <td> <a href="{{url_for('updateid',id = data.id)}}">Edit</a></td>
+                <td><a href="{{url_for('delete',id = data.id)}}">Delete</a> </td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+</div>
+<div class="container">
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+    {% if posts.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+    {% else %}
+    <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock  main_content %}

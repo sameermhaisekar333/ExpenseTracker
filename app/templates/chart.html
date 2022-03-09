@@ -1,0 +1,285 @@
+{% extends "/basic.html" %}
+{% block css_content %}
+{% endblock css_content %}
+
+{% block title_content %}
+<title>{{title}}</title> 
+{% endblock title_content %}
+
+{% block main_content %}
+
+<div class="container  mt-4 mb-4 ml-4 mr-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2  ">
+            <canvas id="account_Chart"></canvas>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2   ">
+            <canvas id="category_Chart"></canvas>
+        </div>
+    </div>
+
+</div>
+<div class="container  mt-4 mb-4 ml-4 mr-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <canvas id="yearMonth_Chart"></canvas>
+        </div>
+    </div>
+</div>
+<div class="container  mt-4 mb-4 ml-4 mr-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 ">
+            <canvas id="year_Chart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}
+
+{% block js_script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var fontColor = "black";
+    getAccountsChart();
+    getCategoryChart();
+    getYearMonthChart();
+    getYearChart();
+
+
+    function getAccountsChart() {
+        const accountName = JSON.parse({{ account_name| tojson}});
+    const accountAmount = JSON.parse({{ account_amount| tojson}});
+    // console.log((accountName));
+    // let a  = (accountName).length;
+    // console.log(a);
+    let accountColor = [];
+    addColor(accountName.length, accountColor);
+    // console.log(accountColor); 
+
+    let dataAccount = {
+        labels: accountName,
+        datasets: [{
+            label: ' ',
+            data: accountAmount,
+            backgroundColor: accountColor,
+            borderColor: accountColor,
+            borderWidth: 1
+        }]
+    };
+    const optionsAccount = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: fontColor
+                }
+            },
+            title: {
+                display: true,
+                text: 'All Used Account',
+                color: fontColor
+            }
+        }
+    };
+    const configAccount = {
+        type: 'pie',
+        data: dataAccount,
+        options: optionsAccount
+
+    };
+
+    const accountChart = new Chart(
+        document.getElementById('account_Chart').getContext('2d'),
+        configAccount); 
+                    
+    }
+    function getCategoryChart() {
+        const categoryName = JSON.parse({{ category_name| tojson}});
+    const categoryAmount = JSON.parse({{ category_amount| tojson}});
+    // console.log(typeof(categoryName));
+    let categoryColor = [];
+    // console.log(categoryName.length);
+    addColor(categoryName.length, categoryColor);
+    //console.log(categoryColor); 
+
+    const dataCategory = {
+        labels: categoryName,
+        datasets: [{
+            label: 'Category',
+            data: categoryAmount,
+            backgroundColor: categoryColor,
+            borderColor: categoryColor,
+            borderWidth: 1
+        }]
+    };
+    const optionsCategory = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: fontColor
+                }
+            },
+            title: {
+                display: true,
+                text: 'All Used Category ',
+                color: fontColor
+            }
+        }
+    };
+    const configCategory = {
+        type: 'pie',
+        data: dataCategory,
+        options: optionsCategory
+
+    };
+    const categoryChart = new Chart(
+        document.getElementById('category_Chart').getContext('2d'),
+        configCategory);  
+     }
+    function getYearMonthChart() {
+        const yearMonthName = JSON.parse({{ year_month| tojson}});
+    const yearMonthAmount = JSON.parse({{ year_month_amount| tojson}});
+    // console.log(typeof(yearMonthName)); 
+    let yearMonthColor = [];
+    // console.log(yearMonthName.length);
+    addColor(yearMonthName.length, yearMonthColor);
+    // console.log(yearMonthColor);
+
+    const dataYearMonth = {
+        labels: yearMonthName,
+        datasets: [{
+            label: '',
+            data: yearMonthAmount,
+            backgroundColor: yearMonthColor,
+            borderColor: yearMonthColor,
+            borderWidth: 3
+        }]
+    };
+    const optionsYearMonth = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: fontColor,
+                    borderColor: fontColor
+                },
+
+                ticks: {
+                    color: fontColor
+                }
+            },
+            x: {
+
+                grid: {
+                    color: fontColor,
+                    borderColor: fontColor
+                },
+                ticks: {
+                    color: fontColor
+                }
+            },
+
+
+        },
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: fontColor
+                }
+            },
+            title: {
+                display: true,
+                text: 'Monthly Expense',
+                color: fontColor
+            }
+        }
+    };
+    const configYearMonth = {
+        type: 'line',
+        data: dataYearMonth,
+        options: optionsYearMonth
+
+    };
+    const yearMonthChart = new Chart(
+        document.getElementById('yearMonth_Chart').getContext('2d'),
+        configYearMonth); 
+                
+    }
+    function getYearChart() {
+
+        const yearName = JSON.parse({{ year_name| tojson}});
+    const yearAmount = JSON.parse({{ year_amount| tojson}});
+    let yearColor = [];
+    addColor(yearName.length, yearColor);
+    //console.log(yearColor);
+
+    const yearData = {
+        labels: yearName,
+        datasets: [
+            {
+                label: '',
+                data: yearAmount,
+                backgroundColor: yearColor
+
+            }
+        ]
+    };
+    optionsYear = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: fontColor,
+                    borderColor: fontColor
+                },
+                ticks: {
+                    color: fontColor
+                }
+
+
+            },
+            x: {
+
+                grid: {
+                    color: fontColor,
+                    borderColor: fontColor
+                },
+                ticks: {
+                    color: fontColor
+                }
+            },
+        },
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: fontColor
+                }
+            },
+            title: {
+                display: true,
+                text: 'Yearly Expense',
+                color: fontColor
+            }
+        }
+    }
+
+    const configYear = {
+        type: 'bar',
+        data: yearData,
+        options: optionsYear
+
+    };
+    const yearChart = new Chart(
+        document.getElementById('year_Chart').getContext('2d'),
+        configYear); 
+             
+    }
+
+</script>
+{% endblock js_script %}
