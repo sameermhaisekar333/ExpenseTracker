@@ -187,3 +187,9 @@ def get_amount_for_category(category):
         year_name.append(a)
         year_value.append(b)  
     return year_name,year_value 
+
+def get_amount_for_dates(): 
+    amount = db.session.query(func.strftime('%Y-%m-%d', User.date),
+                              db.func.sum(User.amount)).group_by(User.date).all()
+    #print(amount)
+    return amount
