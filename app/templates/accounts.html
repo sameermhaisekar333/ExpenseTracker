@@ -1,6 +1,6 @@
 {% extends "/basic.html" %}
 {% block css_content %}
-
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 {% endblock css_content%}
 {% block title_content %}
 <title>{{title}}</title>
@@ -25,121 +25,45 @@
             {% for data in posts %}
             <tr>
                 <td>{{data.id}}</td>
-                <td><a href="{{url_for('accounts',id = data.account)}}">{{data.account}}</a></td>
-                <td><a href="{{url_for('category',id = data.category)}}">{{data.category}}</a></td>
+                <td><a class="text-decoration-none"
+                        href="{{url_for('accounts',id = data.account)}}">{{data.account}}</a></td>
+                <td><a class="text-decoration-none"
+                        href="{{url_for('category',id = data.category)}}">{{data.category}}</a></td>
                 <td>{{data.subcategory}}</td>
-                <td><a href="{{url_for('dates',id = data.date)}}">{{data.date}}</a></td>
+                <td><a class="text-decoration-none" href="{{url_for('dates',id = data.date)}}">{{data.date}}</a></td>
                 <td>{{data.amount}}</td>
-                <td> <a href="{{url_for('updateid',id = data.id)}}">Edit</a></td>
-                <td><a href="{{url_for('delete',id = data.id)}}">Delete</a> </td>
+                <td> <a class="text-decoration-none" href="{{url_for('updateid',id = data.id)}}">Edit</a></td>
+                <td><a class="text-decoration-none" href="{{url_for('delete',id = data.id)}}">Delete</a> </td>
             </tr>
             {%endfor%}
+            <tr>
+                <td colspan="4"></td>
+                <td>Total</td>
+
+                <td> {{ posts | sum(attribute='amount') }}</td>
+                <td colspan="2"></td>
+            </tr>
         </table>
     </div>
 </div>
 <div class="container  mt-4 mb-4 ml-4 mr-4">
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 ">
-            <canvas id="categoryChart_account"></canvas>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 mt-2 mb-2">
+            <div id="Category"> </div>
         </div>
-        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 ">
-            <canvas id="yearChart_account"></canvas>
+        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 mt-2 mb-2">
+            <div id="Year"> </div>
         </div>
     </div>
 </div>
 {% endblock main_content %}
 {% block js_script %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    fontColor = "black";
-    categoryChartAccount();
-    yearChartAccount();
+    var graph = {{ graphJSON | safe}};  
+    Plotly.plot('Category', graph, {});
+    var graph1 = {{ graphJSON1 | safe}};
+    Plotly.plot('Year', graph1, {});
 
-    function categoryChartAccount() {
-        const categoryName = JSON.parse({{ category_name| tojson}});
-    const categoryAmount = JSON.parse({{ category_amount| tojson}});
-    let categoryColor = [];
-    addColor(categoryName.length, categoryColor);
-    // console.log(categoryColor); 
-    let dataCategoryAccount = {
-        labels: categoryName,
-        datasets: [{
-            label: 'Category Used',
-            data: categoryAmount,
-            backgroundColor: categoryColor,
-            borderColor: categoryColor,
-            borderWidth: 1
-        }]
-    };
-    const optionsCatgeoryAccount = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-                labels: {
-                    color: fontColor
-                }
-            },
-            title: {
-                display: true,
-                text: 'Category Used',
-                color: fontColor
-            }
-        }
-    };
-    const configCategroyAccount = {
-        type: 'doughnut',
-        data: dataCategoryAccount,
-        options: optionsCatgeoryAccount
-
-    };
-    const categoryChartAccount = new Chart(
-        document.getElementById('categoryChart_account').getContext('2d'),
-        configCategroyAccount);
-}
-    function yearChartAccount() {
-        const yearName = JSON.parse({{ year_name| tojson}});
-    const yearAmount = JSON.parse({{ year_amount| tojson}});
-    let yearColor = [];
-    addColor(yearName.length, yearColor);
-    // console.log(yearColor); 
-    let dataYearAccount = {
-        labels: yearName,
-        datasets: [{
-            label: 'Account Used',
-            data: yearAmount,
-            backgroundColor: yearColor,
-            borderColor: yearColor,
-            borderWidth: 1
-        }]
-    };
-    const optionsYearAccount = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-                labels: {
-                    color: fontColor
-                }
-            },
-            title: {
-                display: true,
-                text: 'Yearly ',
-                color: fontColor
-            }
-        }
-    };
-    const configYearAccount = {
-        type: 'polarArea',
-        data: dataYearAccount,
-        options: optionsYearAccount
-
-    };
-    const yearChartAccount = new Chart(
-        document.getElementById('yearChart_account').getContext('2d'),
-        configYearAccount);
-}
-
-
-</script>
+</script> 
 {% endblock js_script %}

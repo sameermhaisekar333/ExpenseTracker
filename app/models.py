@@ -1,6 +1,8 @@
 from app import db
 from sqlalchemy import func 
-
+import csv
+import sqlite3
+from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -193,3 +195,71 @@ def get_amount_for_dates():
                               db.func.sum(User.amount)).group_by(User.date).all()
     #print(amount)
     return amount
+
+def write_to_csv():
+    data = User.query.all()
+    # print(data)
+    with open("./data.csv", "w") as fp:
+        writecontent = csv.writer(fp)
+        header = ["id", "account", "category", "subcategory", "date", "amount"]
+        writecontent.writerow(header)
+        for item in data: 
+            writecontent.writerow(
+                [
+                    item.id,
+                    item.account,
+                    item.category,
+                    item.subcategory,
+                    item.date,
+                    item.amount,
+                ]
+            )
+
+
+def insert_bulk(path):
+    updated = False
+
+    try:
+        # Connecting to the  database
+        connection = sqlite3.connect("app/testdata.db")
+        # Creating a cursor object to execute
+        
+        cursor = connection.cursor()
+        # sql_query = """SELECT name FROM sqlite_master  WHERE type='table';"""
+        # del_query = """ DELETE FROM user """
+        # cursor.execute(del_query)
+        # print(cursor.fetchall())
+        # connection.commit()
+        # path ='./model-data (4).csv'
+
+        with open(path, "r") as fp:
+            contents = csv.DictReader(fp)
+            user_content = [
+                (
+                    item["account"],
+                    item["category"],
+                    item["subcategory"],
+                    datetime.strptime(item["date"], "%Y-%m-%d").date(),
+                    item["amount"],
+                )
+                for item in contents
+            ]
+            # print(user_content)
+
+            insert_records = "INSERT INTO user (account,category,subcategory,date,amount) VALUES (?,?,?, ?,?);"
+
+            cursor.executemany(insert_records, user_content)
+            # print(cursor.rowcount )
+            connection.commit()
+
+            # connection.close()
+            updated = True
+    except sqlite3.Error as error:
+        print("Error occurred - ", error)
+    except Exception as ex:
+        print("Error occurred - ", ex)
+    finally:
+        connection.close()
+        print("Connection closed")
+
+    return updated

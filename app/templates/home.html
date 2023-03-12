@@ -3,13 +3,13 @@
 
 {% endblock css_content%}
 {% block title_content %}
-<title>{{title}}</title> 
-{% endblock  title_content%}
+<title>{{title}}</title>
+{% endblock title_content%}
 
 {% block main_content %}
 <div class="container">
     <div class="table-responsive-md ">
-        <table class="table table-sm  table-dark table-striped table-bordered caption-top ">
+        <table class="table table-sm   table-striped table-bordered caption-top ">
             <caption>
                 <h2>Transactions</h2>
             </caption>
@@ -24,13 +24,15 @@
             {% for data in posts.items %}
             <tr>
                 <td>{{data.id}}</td>
-                <td><a href="{{url_for('accounts',id = data.account)}}">{{data.account}}</a></td>
-                <td><a href="{{url_for('category',id = data.category)}}">{{data.category}}</a></td>
+                <td><a class="text-decoration-none"
+                        href="{{url_for('accounts',id = data.account)}}">{{data.account}}</a></td>
+                <td><a class="text-decoration-none"
+                        href="{{url_for('category',id = data.category)}}">{{data.category}}</a></td>
                 <td>{{data.subcategory}}</td>
-                <td><a href="{{url_for('dates',id = data.date)}}">{{data.date}}</a></td>
+                <td><a class="text-decoration-none" href="{{url_for('dates',id = data.date)}}">{{data.date}}</a></td>
                 <td>{{data.amount}}</td>
-                <td> <a href="{{url_for('updateid',id = data.id)}}">Edit</a></td>
-                <td><a href="{{url_for('delete',id = data.id)}}">Delete</a> </td>
+                <td> <a class="text-decoration-none" href="{{url_for('updateid',id = data.id)}}">Edit</a></td>
+                <td><a class="text-decoration-none" href="{{url_for('delete',id = data.id)}}">Delete</a> </td>
             </tr>
             {%endfor%}
         </table>
@@ -49,4 +51,4 @@
     {% endif %}
     {% endfor %}
 </div>
-{% endblock  main_content %}
+{% endblock main_content %}

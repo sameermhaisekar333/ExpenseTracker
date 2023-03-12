@@ -1,4 +1,4 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,flash
 from app import app,db
 from app.input_form import EntryForm 
 from app.models import User,account_wise_amount,all_category_sub
@@ -19,6 +19,7 @@ def updateid(id):
             user.amount = form.amount.data 
             #print(form.subcategory.data) 
             db.session.commit()
+            flash("Update ID {}".format(id), "success") 
             return(redirect(url_for('home')))
     elif request.method == 'GET':
         form.account.data = user.account

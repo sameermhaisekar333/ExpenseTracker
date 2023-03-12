@@ -1,0 +1,27 @@
+{% extends "/basic.html" %}
+{% block css_content %}
+
+{% endblock css_content%}
+{% block title_content %}
+<title>{{title}}</title>
+{% endblock title_content%}
+
+{% block main_content %}
+<div class="container">
+    <div class="table-responsive-md ">
+        <table class="table table-sm   table-striped table-bordered caption-top ">
+            <caption>
+                <h2>Content of {{name}}</h2> 
+            </caption>
+            {% for row in data %}
+            <tr>
+                {% for col in row %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock main_content %}

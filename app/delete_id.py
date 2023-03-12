@@ -1,4 +1,4 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,flash
 from app import app,db
 from app.models import User
 
@@ -8,5 +8,6 @@ def delete(id):
     user = User.query.get_or_404(id)
     #print(user)  
     db.session.delete(user) 
-    db.session.commit()   
+    db.session.commit() 
+    flash("Deleted ID {}".format(id), "success")   
     return redirect(url_for('home')) 

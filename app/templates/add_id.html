@@ -7,65 +7,115 @@
 {% endblock title_content %}
 
 
-{% block main_content %}
+{% block main_content %} 
 
 <div class="container">
+    <div class="row mt-2">
+        <div class="col-sm-12 col-md-6 col-lg-4 mr-2 ml-1  ">
+            <div class="card ">
+                <div class="card-body ">
+                    <h6 class="card-title text-info text-center">ADD</h6>
+                    {{ form.hidden_tag()}}
+                    <form method="POST">
+                        <ul class="list-group">
+                            <li class="list-group-item">
 
-    {{ form.hidden_tag()}}
-    <form class="row g-3" method="POST">
-        {{ form.account.label}}
-        {{ form.account}}
+                                {{ form.account.label}}
+                                <br>
+                                {{ form.account(class="w-100 bg-dark text-white")}}
+                            </li>
 
-        {{ form.category.label}}
-        {{ form.category}}
+                            <li class="list-group-item">
 
-        {{ form.subcategory.label}}
-        {{ form.subcategory}}
+                                {{ form.category.label}}
+                                <br>
+                                {{ form.category(class="w-100 bg-dark text-white")}}
 
-        {{ form.date.label}}
-        {{ form.date}}
 
-        {{ form.amount.label}}
-        {{ form.amount}}
+                            </li>
+                            <li class="list-group-item">
+                                {{ form.subcategory.label}}
+                                <br>
+                                {{ form.subcategory(class="w-100 bg-dark text-white")}}
 
-        {{ form.submit(class="btn btn-outline-info")}}
-    </form>
 
+                            </li>
+                            <li class="list-group-item">
+                                {{ form.date.label}}
+                                <br>
+                                {{ form.date(class="w-100 bg-dark text-white")}}
+
+
+                            </li>
+                            <li class="list-group-item">
+
+                                {{ form.amount.label}}
+                                <br>
+                                {{ form.amount(class="w-100 bg-dark text-white")}}
+
+
+                            </li>
+                            <li class="list-group-item">
+
+                                {{ form.submit(class="btn btn-outline-info")}}
+
+                            </li>
+
+
+                            <!-- <span class="text-danger">{{ ', '.join(form.errors) }}</span> -->
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mr-2 ml-2  ">
+            <div class="card ">
+                <div class="card-body overflow-auto" style=" height: 440px;">
+                    <h6 class="card-title text-info text-center">ACCOUNT</h6>
+                    <ul class="list-group list-group-flush border">
+                        {% for name in account %}
+                        <li class="list-group-item">{{name}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 mr-2 ml-2  ">
+            <div class="card ">
+                <div class="card-body overflow-auto " style=" height: 440px;">
+                    <h6 class="card-title  ">
+                        <li class="list-group-item border-0">
+                            <div class="row ">
+                                <div class="col text-info ">
+                                    CATEGORY
+                                </div>
+                                <div class="col text-info">
+                                    SUBCATEGORY
+                                </div>
+                            </div>
+                        </li>
+                        </h5>
+                        <ul class="list-group">
+
+
+                            {% for c,s in category %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col">
+                                        {{c}}
+                                    </div>
+                                    <div class="col">
+                                        {{s}}
+                                    </div>
+                                </div>
+                            </li>
+                            {%endfor%} 
+                        </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
-<br/>
-
-
-<div class="container ">
-    <h4>Already used</h4>
-    <div class="row ">
-        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2 ">
-            <div class="table-responsive-md ">
-                <table class="table table-sm  table-dark table-striped ">
-                    <th>ACCOUNT</th>
-                    {% for name in account %}
-                    <tr>
-                        <td>{{name}}</td>
-                    </tr>
-                    {%endfor%}
-                </table>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-lg-6 mr-2 ml-2  ">
-            <div class="table-responsive-md ">
-                <table class="table table-sm  table-dark table-striped table-bordered ">
-                    <th>CATEGORY</th>
-                    <th>SUBCATEGORY</th>
-                    {% for c,s in category %}
-                    <tr>
-                        <td>{{c}}</td>
-                        <td>{{s}}</td>
-                    </tr> 
-                    {%endfor%}
-                </table>
-            </div>
-        </div>
-
-
-        {% endblock main_content%}
+{% endblock main_content%}
